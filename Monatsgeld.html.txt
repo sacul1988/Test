@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechner</title>
+    <style>
+        body {
+            background-color: #184d47; /* Dunkles Grün */
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            font-size: 20px; /* Größere Schrift */
+        }
+        #calculationResult {
+            margin-top: 20px;
+            font-size: 28px; /* Größere Schrift */
+            font-weight: bold; /* Fetter Text */
+        }
+        #advice {
+            margin-top: 10px;
+            font-size: 24px; /* Größere Schrift */
+            font-weight: bold; /* Fetter Text */
+        }
+        input[type="number"] {
+            padding: 8px;
+            margin-top: 10px;
+            border: none;
+            background-color: #333;
+            color: white;
+        }
+        input[type="submit"] {
+            padding: 8px 20px;
+            margin-top: 10px;
+            border: none;
+            background-color: #555;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rechner</h1>
+    <div id="calculationResult"></div>
+    <div id="advice"></div>
+    <form id="inputForm">
+        <label for="userInput">Aktueller Kontostand:</label>
+        <input type="number" id="userInput" placeholder="Geben Sie eine Zahl ein">
+        <input type="submit" value="Berechnen">
+    </form>
+
+    <script>
+        // Berechnung und Anzeige des Ergebnisses
+        function calculate() {
+            var x = new Date().getDate(); // Aktuelles Datum als Tag des Monats
+            var result = 700 - (23 * x);
+            var calculationText = "So viel müsste noch auf dem Konto sein: " + result.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+
+            // Ausgabe des Ergebnisses
+            document.getElementById("calculationResult").innerHTML = calculationText;
+
+            // Eventlistener für das Formular
+            document.getElementById("inputForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Verhindert das Neuladen der Seite beim Absenden des Formulars
+                var userInput = document.getElementById("userInput").value;
+                var finalResult = userInput - result;
+
+                // Ausgabe des Ergebnisses der Subtraktion in derselben Zeile wie den Text
+                var userInputResultText = "Differenz: " + finalResult.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+                document.getElementById("advice").innerHTML = userInputResultText;
+
+                // Ausgabe des Ratschlags basierend auf dem Ergebnis
+                if (finalResult > 0) {
+                    document.getElementById("advice").innerHTML += " - Guthaben";
+                } else if (finalResult < 0) {
+                    document.getElementById("advice").innerHTML += " - Schulden";
+                } else {
+                    document.getElementById("advice").innerHTML += " - Du hast genau ausgegeben";
+                }
+            });
+        }
+
+        // Aufruf der calculate-Funktion beim Laden der Seite
+        window.onload = calculate;
+    </script>
+</body>
+</html>
